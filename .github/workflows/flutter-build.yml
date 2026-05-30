@@ -24,6 +24,10 @@ jobs:
       uses: expo/expo-github-action@v8
       with:
         eas-version: latest
+        expo-cache: true
+        eas-cache: true
+        packager: pnpm
+        patch-watchers: true
         token: ${{ secrets.EXPO_TOKEN }}
 
     - name: Build Android APK with EAS
@@ -31,15 +35,9 @@ jobs:
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-    - name: Download APK
-      run: |
-        # Download the built APK from EAS
-        mkdir -p ./build
-        echo "Build completed successfully"
-
-    - name: Upload APK Artifact
+    - name: Upload Build Info
       uses: actions/upload-artifact@v4
       if: success()
       with:
-        name: TradeSimPro-Android-APK
+        name: TradeSimPro-Android-Build
         path: './build/'
