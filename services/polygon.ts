@@ -92,32 +92,29 @@ export const fetchQuote = async (symbol: string, apiKey: string): Promise<StockQ
 };
 
 export const fetchSnapshotQuote = async (symbol: string, apiKey: string): Promise<StockQuote | null> => {
+  return fetchSingleQuoteFree(symbol, apiKey);
+};
+
+const fetchSingleQuoteFree = async (symbol: string, apiKey: string): Promise<StockQuote | null> => {
   try {
-    const url = buildUrl(`/v2/snapshot/locale/us/markets/stocks/tickers/${symbol}`, apiKey);
-    const res = await fetch(url);
+    const prevUrl = buildUrl(`/v2/aggs/ticker/${symbol}/prev`, apiKey, { adjusted: 'true' });
+    const res = await fetch(prevUrl);
     const data = await res.json();
-    const ticker = data?.ticker;
-    if (!ticker) return null;
-
-    const day = ticker.day || {};
-    const prevDay = ticker.prevDay || {};
-    const lastTrade = ticker.lastTrade || {};
-    const todayChange = ticker.todaysChange ?? 0;
-    const todayChangePct = ticker.todaysChangePerc ?? 0;
-
-    const price = lastTrade.p ?? day.c ?? prevDay.c ?? 0;
-
+    const r = data?.results?.[0];
+    if (!r) return null;
+    const price = r.c ?? 0;
+    const prevClose = r.c ?? 0;
     return {
       symbol,
       price,
-      open: day.o ?? prevDay.o ?? 0,
-      high: day.h ?? prevDay.h ?? 0,
-      low: day.l ?? prevDay.l ?? 0,
-      close: day.c ?? prevDay.c ?? 0,
-      previousClose: prevDay.c ?? 0,
-      change: todayChange,
-      changePercent: todayChangePct,
-      volume: day.v ?? prevDay.v ?? 0,
+      open: r.o ?? 0,
+      high: r.h ?? 0,
+      low: r.l ?? 0,
+      close: r.c ?? 0,
+      previousClose: prevClose,
+      change: r.c - r.o,
+      changePercent: r.o > 0 ? ((r.c - r.o) / r.o) * 100 : 0,
+      volume: r.v ?? 0,
       timestamp: Date.now(),
     };
   } catch {
@@ -127,35 +124,16 @@ export const fetchSnapshotQuote = async (symbol: string, apiKey: string): Promis
 
 export const fetchBatchQuotes = async (symbols: string[], apiKey: string): Promise<Record<string, StockQuote>> => {
   const result: Record<string, StockQuote> = {};
-  try {
-    const tickers = symbols.join(',');
-    const url = buildUrl(`/v2/snapshot/locale/us/markets/stocks/tickers`, apiKey, { tickers });
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (data?.tickers) {
-      for (const ticker of data.tickers) {
-        const sym = ticker.ticker;
-        const day = ticker.day || {};
-        const prevDay = ticker.prevDay || {};
-        const lastTrade = ticker.lastTrade || {};
-        const price = lastTrade.p ?? day.c ?? prevDay.c ?? 0;
-        result[sym] = {
-          symbol: sym,
-          price,
-          open: day.o ?? 0,
-          high: day.h ?? 0,
-          low: day.l ?? 0,
-          close: day.c ?? 0,
-          previousClose: prevDay.c ?? 0,
-          change: ticker.todaysChange ?? 0,
-          changePercent: ticker.todaysChangePerc ?? 0,
-          volume: day.v ?? 0,
-          timestamp: Date.now(),
-        };
-      }
+  // Fetch in batches of 5 to avoid rate limits
+  const BATCH = 5;
+  for (let i = 0; i < symbols.length; i += BATCH) {
+    const batch = symbols.slice(i, i + BATCH);
+    const quotes = await Promise.all(batch.map(sym => fetchSingleQuoteFree(sym, apiKey)));
+    for (const q of quotes) {
+      if (q) result[q.symbol] = q;
     }
-  } catch {}
+    if (i + BATCH < symbols.length) await new Promise(r => setTimeout(r, 300));
+  }
   return result;
 };
 
