@@ -8,6 +8,7 @@
     "scheme": "onspaceapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "projectId": "stocksimpro",
     "ios": {
       "supportsTablet": true
     },
