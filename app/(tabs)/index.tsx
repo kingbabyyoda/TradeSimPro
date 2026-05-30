@@ -83,7 +83,7 @@ export default function MarketsScreen() {
         </View>
         <Pressable
           style={styles.settingsBtn}
-          onPress={() => router.push('/onboarding')}
+          onPress={() => router.push('/onboarding' as any)}
           hitSlop={8}
         >
           <Ionicons name="settings-outline" size={20} color={Colors.textSecondary} />
@@ -99,7 +99,7 @@ export default function MarketsScreen() {
               <Pressable
                 key={q.symbol}
                 style={({ pressed }) => [styles.moverCard, pressed && { opacity: 0.8 }]}
-                onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: q.symbol } })}
+                onPress={() => router.push({ pathname: '/stock/[symbol]' as any, params: { symbol: q.symbol } })}
               >
                 <Text style={styles.moverSymbol}>{q.symbol}</Text>
                 <Text style={styles.moverPrice}>${q.price.toFixed(2)}</Text>
@@ -149,7 +149,7 @@ export default function MarketsScreen() {
             name={item.name}
             quote={quotes[item.symbol]}
             isLoading={isLoadingQuotes && !quotes[item.symbol]}
-            onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: item.symbol, name: item.name } })}
+            onPress={() => router.push({ pathname: '/stock/[symbol]' as any, params: { symbol: item.symbol, name: item.name } })}
           />
         )}
         contentContainerStyle={styles.listContent}

@@ -48,7 +48,7 @@ export default function WatchlistScreen() {
                 name={item.name}
                 quote={quotes[item.symbol]}
                 isLoading={isLoading}
-                onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: item.symbol, name: item.name } })}
+                onPress={() => router.push({ pathname: '/stock/[symbol]' as any, params: { symbol: item.symbol, name: item.name } })}
               />
             </View>
             <Pressable

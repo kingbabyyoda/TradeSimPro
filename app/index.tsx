@@ -15,6 +15,6 @@ export default function RootIndex() {
     );
   }
 
-  if (!apiKey) return <Redirect href="/onboarding" />;
+  if (!apiKey) return <Redirect href={'/onboarding' as any} />;
   return <Redirect href="/(tabs)" />;
 }

@@ -37,7 +37,7 @@ export default function PortfolioScreen() {
     return (
       <Pressable
         style={({ pressed }) => [styles.posCard, pressed && { opacity: 0.8 }]}
-        onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: item.symbol, name: item.name } })}
+        onPress={() => router.push({ pathname: '/stock/[symbol]' as any, params: { symbol: item.symbol, name: item.name } })}
       >
         <View style={styles.posHeader}>
           <View style={styles.posLeft}>
