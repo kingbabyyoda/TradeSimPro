@@ -1,5 +1,4 @@
 {
-  "projectId": "stocksimpro",
   "cli": {
     "version": ">= 5.0.0",
     "appVersionSource": "local"
