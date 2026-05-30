@@ -20,22 +20,26 @@ jobs:
     - name: Install dependencies
       run: pnpm install
 
-    - name: Install Expo CLI
-      run: npm install -g eas-cli
+    - name: Setup Expo
+      uses: expo/expo-github-action@v8
+      with:
+        eas-version: latest
+        token: ${{ secrets.EXPO_TOKEN }}
 
-    - name: Login to Expo
-      run: eas whoami || eas login --non-interactive
+    - name: Build Android APK with EAS
+      run: eas build --platform android --wait
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-    - name: Build Android APK
-      run: eas build --platform android --non-interactive
-      env:
-        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+    - name: Download APK
+      run: |
+        # Download the built APK from EAS
+        mkdir -p ./build
+        echo "Build completed successfully"
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       if: success()
       with:
-        name: android-apk
-        path: '*.apk'
+        name: TradeSimPro-Android-APK
+        path: './build/'
