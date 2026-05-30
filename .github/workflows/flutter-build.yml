@@ -24,6 +24,7 @@ jobs:
       uses: expo/expo-github-action@v8
       with:
         eas-version: latest
+        expo-version: latest
         expo-cache: true
         eas-cache: true
         packager: pnpm
