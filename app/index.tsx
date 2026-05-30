@@ -1,5 +1,5 @@
 // Powered by OnSpace.AI
-import { Redirect } from 'expo-router';
+import { Redirect, type Href } from 'expo-router';
 import { usePortfolio } from '@/hooks/usePortfolio';
 import { View, ActivityIndicator } from 'react-native';
 import { Colors } from '@/constants/theme';
@@ -15,6 +15,6 @@ export default function RootIndex() {
     );
   }
 
-  if (!apiKey) return <Redirect href="/onboarding" />;
+  if (!apiKey) return <Redirect href={"/onboarding" as Href} />;
   return <Redirect href="/(tabs)" />;
 }

@@ -2,7 +2,7 @@
 import React, { useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, FontSize, FontWeight, Spacing, BorderRadius, Shadow } from '@/constants/theme';
 import { PortfolioSummaryCard } from '@/components/feature/PortfolioSummaryCard';
@@ -37,7 +37,7 @@ export default function PortfolioScreen() {
     return (
       <Pressable
         style={({ pressed }) => [styles.posCard, pressed && { opacity: 0.8 }]}
-        onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: item.symbol, name: item.name } })}
+        onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: item.symbol, name: item.name } } as unknown as Href)}
       >
         <View style={styles.posHeader}>
           <View style={styles.posLeft}>

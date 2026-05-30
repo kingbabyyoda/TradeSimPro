@@ -1,7 +1,6 @@
 // Powered by OnSpace.AI
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, ScrollView, StyleSheet, Pressable, ActivityIndicator, Dimensions } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LineChart } from 'react-native-chart-kit';
@@ -84,19 +83,19 @@ export default function StockDetailScreen() {
     navigation.setOptions({ title: symbol });
     loadQuote();
     loadDetails();
+  }, [navigation, symbol, loadQuote, loadDetails]);
+
+  useEffect(() => {
     loadChart(range);
-  }, [symbol]);
+  }, [loadChart, range]);
 
   const handleRangeChange = (r: ChartRange) => {
     setRange(r);
-    loadChart(r);
   };
 
   const isGain = (quote?.changePercent ?? 0) >= 0;
   const chartColor = isGain ? Colors.gain : Colors.loss;
   const chartPrices = chartData.map(d => d.close);
-  const chartMin = chartPrices.length > 0 ? Math.min(...chartPrices) * 0.998 : 0;
-  const chartMax = chartPrices.length > 0 ? Math.max(...chartPrices) * 1.002 : 1;
   const displayName = details?.name ?? nameParam ?? symbol;
 
   return (

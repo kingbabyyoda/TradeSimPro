@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { View, Text, FlatList, StyleSheet, Pressable, TextInput, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, FontSize, FontWeight, Spacing, BorderRadius } from '@/constants/theme';
 import { StockListItem } from '@/components/feature/StockListItem';
@@ -83,7 +83,7 @@ export default function MarketsScreen() {
         </View>
         <Pressable
           style={styles.settingsBtn}
-          onPress={() => router.push('/onboarding')}
+          onPress={() => router.push('/onboarding' as Href)}
           hitSlop={8}
         >
           <Ionicons name="settings-outline" size={20} color={Colors.textSecondary} />
@@ -99,7 +99,7 @@ export default function MarketsScreen() {
               <Pressable
                 key={q.symbol}
                 style={({ pressed }) => [styles.moverCard, pressed && { opacity: 0.8 }]}
-                onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: q.symbol } })}
+                onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: q.symbol } } as unknown as Href)}
               >
                 <Text style={styles.moverSymbol}>{q.symbol}</Text>
                 <Text style={styles.moverPrice}>${q.price.toFixed(2)}</Text>
@@ -149,7 +149,7 @@ export default function MarketsScreen() {
             name={item.name}
             quote={quotes[item.symbol]}
             isLoading={isLoadingQuotes && !quotes[item.symbol]}
-            onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: item.symbol, name: item.name } })}
+            onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: item.symbol, name: item.name } } as unknown as Href)}
           />
         )}
         contentContainerStyle={styles.listContent}
@@ -158,7 +158,7 @@ export default function MarketsScreen() {
           category === 'Search' && !isSearching && searchQuery.length > 1 ? (
             <View style={styles.emptyContainer}>
               <Ionicons name="search-outline" size={40} color={Colors.textMuted} />
-              <Text style={styles.emptyText}>No results for "{searchQuery}"</Text>
+              <Text style={styles.emptyText}>No results for &quot;{searchQuery}&quot;</Text>
             </View>
           ) : null
         }
