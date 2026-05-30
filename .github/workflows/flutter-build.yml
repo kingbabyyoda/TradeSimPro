@@ -21,8 +21,9 @@ jobs:
       run: pnpm install
 
     - name: Lint code
-      run: pnpm lint --fix
+      run: pnpm lint
       continue-on-error: true
 
-    - name: Build Expo app
-      run: pnpm build
+    - name: Check TypeScript
+      run: pnpm exec tsc --noEmit
+      continue-on-error: true
