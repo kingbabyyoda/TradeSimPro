@@ -31,10 +31,17 @@ jobs:
         patch-watchers: true
         token: ${{ secrets.EXPO_TOKEN }}
 
+    - name: Initialize EAS project
+      run: eas init --id ${{ secrets.EAS_PROJECT_ID }} --non-interactive
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      continue-on-error: true
+
     - name: Build Android APK with EAS
       run: eas build --platform android --wait
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        EAS_BUILD_NO_EXPO_GO_WARNING: true
 
     - name: Upload Build Info
       uses: actions/upload-artifact@v4
