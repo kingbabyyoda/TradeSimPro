@@ -39,6 +39,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "5f5ec64a-f897-45ad-91f1-7aa00000a74b"
+      }
+    },
+    "owner": "kingbabyyoda0517"
   }
 }
