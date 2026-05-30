@@ -1,0 +1,36 @@
+name: Flutter Android APK Build
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository Code
+      uses: actions/checkout@v4
+
+    - name: Set up Java Environment
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Set up Flutter SDK
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        flutter-version: '3.22.0'
+
+    - name: Fetch Dependencies
+      run: |
+        cd TradeSimPro
+        flutter pub get
+
+    - name: Compile Application
+      run: |
+        cd TradeSimPro
+        flutter build apk --debug
+
+    - name: Export APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: TradeSimPro-Debug-APK
+        path: TradeSimPro/build/app/outputs/flutter-apk/app-debug.apk
