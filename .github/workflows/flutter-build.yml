@@ -1,4 +1,4 @@
-name: Build Expo App
+name: Build Expo Android APK
 on: [push, workflow_dispatch]
 jobs:
   build:
@@ -20,10 +20,22 @@ jobs:
     - name: Install dependencies
       run: pnpm install
 
-    - name: Lint code
-      run: pnpm lint
-      continue-on-error: true
+    - name: Install Expo CLI
+      run: npm install -g eas-cli
 
-    - name: Check TypeScript
-      run: pnpm exec tsc --noEmit
-      continue-on-error: true
+    - name: Login to Expo
+      run: eas whoami || eas login --non-interactive
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+    - name: Build Android APK
+      run: eas build --platform android --non-interactive
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
+      if: success()
+      with:
+        name: android-apk
+        path: '*.apk'
