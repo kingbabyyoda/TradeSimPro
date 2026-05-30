@@ -20,13 +20,17 @@ jobs:
         flutter-version: '3.22.0'
 
     - name: Fetch Dependencies
-      run: flutter pub get
+      run: |
+        cd tradesimpro
+        flutter pub get
 
     - name: Compile Application
-      run: flutter build apk --debug
+      run: |
+        cd tradesimpro
+        flutter build apk --debug
 
     - name: Export APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: TradeSimPro-Debug-APK
-        path: build/app/outputs/flutter-apk/app-debug.apk
+        path: tradesimpro/build/app/outputs/flutter-apk/app-debug.apk
