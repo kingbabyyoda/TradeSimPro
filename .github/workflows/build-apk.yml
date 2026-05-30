@@ -3,9 +3,6 @@ on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./TradeSimPro
     steps:
     - uses: actions/checkout@v4
 
@@ -23,9 +20,11 @@ jobs:
 
     - name: Install Project Dependencies
       run: flutter pub get
+      working-directory: TradeSimPro
 
     - name: Compile Debug APK
       run: flutter build apk --debug
+      working-directory: TradeSimPro
 
     - name: Upload Finished Artifact
       uses: actions/upload-artifact@v4
