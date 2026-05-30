@@ -12,7 +12,7 @@ interface BadgeProps {
   size?: 'sm' | 'md';
 }
 
-export const Badge = memo(({ value, type, prefix = '', suffix = '', showSign = false, size = 'md' }: BadgeProps) => {
+export const Badge = memo(function Badge({ value, type, prefix = '', suffix = '', showSign = false, size = 'md' }: BadgeProps) {
   const numVal = typeof value === 'number' ? value : parseFloat(value as string);
   const resolvedType = type ?? (numVal >= 0 ? 'gain' : 'loss');
   const sign = showSign && numVal > 0 ? '+' : '';

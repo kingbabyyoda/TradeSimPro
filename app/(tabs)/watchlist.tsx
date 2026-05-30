@@ -2,7 +2,7 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, FontSize, FontWeight, Spacing, BorderRadius } from '@/constants/theme';
 import { StockListItem } from '@/components/feature/StockListItem';
@@ -48,7 +48,7 @@ export default function WatchlistScreen() {
                 name={item.name}
                 quote={quotes[item.symbol]}
                 isLoading={isLoading}
-                onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: item.symbol, name: item.name } })}
+                onPress={() => router.push({ pathname: '/stock/[symbol]', params: { symbol: item.symbol, name: item.name } } as unknown as Href)}
               />
             </View>
             <Pressable

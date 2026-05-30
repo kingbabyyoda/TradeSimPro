@@ -5,7 +5,7 @@ import { Colors, FontSize, FontWeight, Spacing, BorderRadius, Shadow } from '@/c
 import { usePortfolio } from '@/hooks/usePortfolio';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export const PortfolioSummaryCard = memo(() => {
+export const PortfolioSummaryCard = memo(function PortfolioSummaryCard() {
   const { totalPortfolioValue, totalGainLoss, totalGainLossPercent, portfolio } = usePortfolio();
   const isGain = totalGainLoss >= 0;
   const positionsValue = portfolio.positions.reduce((sum, p) => sum + p.shares * p.currentPrice, 0);

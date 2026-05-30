@@ -12,7 +12,7 @@ interface MiniChartProps {
   isGain?: boolean;
 }
 
-export const MiniChart = memo(({ data, width = Dimensions.get('window').width - 32, height = 160, isGain = true }: MiniChartProps) => {
+export const MiniChart = memo(function MiniChart({ data, width = Dimensions.get('window').width - 32, height = 160, isGain = true }: MiniChartProps) {
   if (!data || data.length < 2) return <View style={[styles.empty, { width, height }]} />;
 
   const prices = data.map(d => d.close);

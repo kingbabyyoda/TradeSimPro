@@ -1,9 +1,9 @@
 // Powered by OnSpace.AI
 import React, { useState, useCallback, memo } from 'react';
 import {
-  View, Text, Modal, StyleSheet, Pressable, TextInput, ScrollView, KeyboardAvoidingView, Platform
+  View, Text, Modal, StyleSheet, Pressable, TextInput, KeyboardAvoidingView, Platform
 } from 'react-native';
-import { Colors, FontSize, FontWeight, Spacing, BorderRadius, Shadow } from '@/constants/theme';
+import { Colors, FontSize, FontWeight, Spacing, BorderRadius } from '@/constants/theme';
 import { StockQuote } from '@/services/polygon';
 import { usePortfolio } from '@/hooks/usePortfolio';
 import { useAlert } from '@/template';
@@ -20,7 +20,7 @@ interface OrderModalProps {
   quote: StockQuote | null;
 }
 
-export const OrderModal = memo(({ visible, onClose, symbol, name, quote }: OrderModalProps) => {
+export const OrderModal = memo(function OrderModal({ visible, onClose, symbol, name, quote }: OrderModalProps) {
   const { executeTrade, placePendingOrder, portfolio } = usePortfolio();
   const { showAlert } = useAlert();
   const [tradeType, setTradeType] = useState<TradeType>('BUY');

@@ -14,7 +14,7 @@ interface StockListItemProps {
   compact?: boolean;
 }
 
-export const StockListItem = memo(({ symbol, name, quote, isLoading, onPress, compact }: StockListItemProps) => {
+export const StockListItem = memo(function StockListItem({ symbol, name, quote, isLoading, onPress, compact }: StockListItemProps) {
   const isGain = (quote?.changePercent ?? 0) >= 0;
   return (
     <Pressable

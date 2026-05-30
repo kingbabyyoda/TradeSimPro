@@ -13,7 +13,7 @@ interface PriceTextProps {
   style?: TextStyle;
 }
 
-export const PriceText = memo(({ value, prefix = '$', size = FontSize.base, weight = FontWeight.semibold, showSign = false, colorize = false, style }: PriceTextProps) => {
+export const PriceText = memo(function PriceText({ value, prefix = '$', size = FontSize.base, weight = FontWeight.semibold, showSign = false, colorize = false, style }: PriceTextProps) {
   const sign = showSign && value > 0 ? '+' : '';
   const color = colorize ? (value >= 0 ? Colors.gain : Colors.loss) : Colors.textPrimary;
   return (
